@@ -23,6 +23,8 @@ MainEngine::MainEngine() : displayer(0)
     /* initializing the default init values if not there */
     setDefaultValue(s, "application_style", "plastique");
     setDefaultValue(s, "theme_2", "Themes/Balanced/");
+    setDefaultValue(s, "battle_cry_volume", 100);
+    setDefaultValue(s, "battle_music_volume", 100);
 
 #ifdef Q_OS_MACX
     setDefaultValue(s, "team_location", QDir::homePath() + "/Documents/trainer.tp");
@@ -394,17 +396,19 @@ void MainEngine::rebuildThemeMenu()
 
     QStringList searchPath = Theme::SearchPath();
 
-    QSet<QFileInfo> themes;
+    QSet<QString> themes;
     foreach(QString dir, searchPath) {
         QDir d(dir);
-        themes.unite(d.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name).toSet());
+        foreach(QFileInfo f, d.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name)) {
+            themes.insert(f.baseName());
+        }
     }
 
     QString theme = s.value("theme_2").toString().section('/', -2, -2);
 
     QActionGroup *ag = new QActionGroup(themeMenu);
-    foreach(QFileInfo f, themes) {
-        QAction *ac = themeMenu->addAction(f.baseName(), this, SLOT(changeTheme()));
+    foreach(QString baseName, themes) {
+        QAction *ac = themeMenu->addAction(baseName, this, SLOT(changeTheme()));
         ac->setCheckable(true);
         if (ac->text() == theme)
             ac->setChecked(true);
@@ -425,10 +429,3 @@ void MainEngine::changeUserThemeFolder()
 
 
 #undef MainEngineRoutine
-
-/* Required for using QSet to differentiate between QDirs when creating themes menu. */ 
-uint qHash(const QFileInfo &f)
-{
-    return qHash(f.canonicalPath());
-}
-

@@ -42,10 +42,10 @@ SOURCES += main.cpp \
     Teambuilder/pokebodywidget.cpp \
     logmanager.cpp \
     poketextedit.cpp \
-    remove_direction_override.cpp \
 	password_wallet.cpp\
     spectatorwindow.cpp \
-    replayviewer.cpp
+    replayviewer.cpp \
+    soundconfigwindow.cpp
 HEADERS +=  ../PokemonInfo/pokemoninfo.h \
     menu.h \
     mainwindow.h \
@@ -73,7 +73,6 @@ HEADERS +=  ../PokemonInfo/pokemoninfo.h \
     tierstruct.h \
     theme.h \
     rearrangewindow.h \
-    ui_controlpanel.h \
     ../Shared/networkcommands.h \
     poketablemodel.h \
     modelenum.h \
@@ -95,7 +94,6 @@ HEADERS +=  ../PokemonInfo/pokemoninfo.h \
     engineinterface.h \
     logmanager.h \
     poketextedit.h \
-    remove_direction_override.h \
 	password_wallet.h\
     spectatorwindow.h \
     ../BattleManager/battlescene.h \
@@ -105,7 +103,8 @@ HEADERS +=  ../PokemonInfo/pokemoninfo.h \
     ../BattleManager/battleclientlog.h \
     basebattlewindowinterface.h \
     themeaccessor.h \
-    replayviewer.h
+    replayviewer.h \
+    soundconfigwindow.h
 LIBS += -L../../bin \
     -lpokemonlib \
     -lutilities \
@@ -133,11 +132,11 @@ RESOURCES +=
 
 
 macx {
-   INCLUDEPATH += /usr/local/gcc-4.6.2/include
-   LIBS += -L/usr/local/gcc-4.6.2/lib -framework CoreFoundation
+   LIBS += -framework CoreFoundation
    ICON = pokemononline.icns
    QMAKE_INFO_PLIST = Info.plist
    QMAKE_LFLAGS_SONAME  = -Wl,-install_name,@executable_path/../Frameworks/
+   QMAKE_POST_LINK = macdeployqt $${DESTDIR}/$${TARGET}.app
 }
 
 
@@ -147,3 +146,6 @@ CONFIG(debian) {
 
 
 CONFIG(popmsyoustartonly):DEFINES += PO_PMS_YOU_START_ONLY
+
+include(../Shared/Common.pri)
+

@@ -42,8 +42,7 @@ SOURCES += main.cpp \
     serverwidget.cpp \
     battlingoptions.cpp \
     tierwindow.cpp \
-    serverconfig.cpp \
-    confighelper.cpp
+    serverconfig.cpp
 LIBS += -L../../bin \
     -lutilities \
     -lpokemonlib
@@ -105,7 +104,7 @@ HEADERS += player.h \
     serverconfig.h \
     sqlconfig.h \
     tierwindow.h \
-    confighelper.h
+    ../Utilities/confighelper.h
 CONFIG(nogui) { 
     QT -= gui
     DEFINES += PO_NO_GUI
@@ -121,12 +120,11 @@ CONFIG(safeonlyscript):DEFINES += PO_SCRIPT_SAFE_ONLY
 CONFIG(nosysteminscript):DEFINES += PO_SCRIPT_NO_SYSTEM
 
 macx {
-   INCLUDEPATH += /usr/local/gcc-4.6.2/include
-   LIBS += -L/usr/local/gcc-4.6.2/lib -framework CoreFoundation
+   LIBS += -framework CoreFoundation
    # Todo: get a real icon
    #ICON = pokemononline.icns
    QMAKE_INFO_PLIST = Info.plist
    QMAKE_LFLAGS_SONAME  = -Wl,-install_name,@executable_path/../Frameworks/
 }
 
-
+include(../Shared/Common.pri)
