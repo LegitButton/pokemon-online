@@ -1,0 +1,6 @@
+ var loop = function () {
+            setTimeout(function () {
+                if (!Tournaments.tournaments[_room.id] || !Poll[_room.id].question) poll();
+                if (Bot.config.hosting[_room.id]) loop();
+            }, 1000 * 60);
+        };
